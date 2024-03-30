@@ -10,3 +10,4 @@ const calendarEvent = new mongoose.Schema ({
 const Event = mongoose.model("Event", calendarEvent)
 
 module.exports = Event 
+
