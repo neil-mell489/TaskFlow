@@ -14,6 +14,8 @@ app.use(express.urlencoded({extended: true}))
 
 // Routes
 
+app.use ("/api", controllers)
+
 app.get("/", (req,res) => {
     res.send("This is working")
 })
