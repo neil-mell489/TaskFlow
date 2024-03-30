@@ -1,4 +1,4 @@
-const db = require("../models")
+const db = require("../models/Event")
 
 
 const getEvent = async(req,res) => {

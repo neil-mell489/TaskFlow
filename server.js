@@ -2,7 +2,7 @@ require("dotenv").config()
 
 const cors = require("cors")
 const {PORT} = process.env
-const controllers = require("./controllers/taskController")
+const controllers = require("./controllers/index.js")
 
 const express = require("express")
 const app = express()
@@ -14,7 +14,7 @@ app.use(express.urlencoded({extended: true}))
 
 // Routes
 
-app.use ("/api", controllers)
+app.use("/api", controllers)
 
 app.get("/", (req,res) => {
     res.send("This is working")
