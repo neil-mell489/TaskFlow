@@ -8,6 +8,7 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB database
@@ -34,7 +35,7 @@ app.get('/', (req, res) => {
   res.send('This is working');
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
 });

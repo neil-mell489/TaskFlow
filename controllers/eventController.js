@@ -26,7 +26,7 @@ const createEvent = async(req,res) => {
 const updateEvent = async (req,res) => {
     try{
         const updatedEvent = await db.Event.findByIdAndUpdate(req.params.id, req.body, {new:true})
-        if(!updateEvent){
+        if(!updatedEvent){
             res.status(400).json({message: "Could not updated event"})
         }else {
             res.status(200).json({data: updatedEvent, message: "Event updated"})
