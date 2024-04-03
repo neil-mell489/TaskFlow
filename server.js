@@ -2,7 +2,6 @@ require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
-const controllers = require('./controllers/index.js');
 
 const app = express();
 
@@ -21,8 +20,16 @@ mongoose.connect(process.env.MONGODB_URI)
   });
 
 // Routes
-app.use('/api', controllers);
+const eventRoutes = require('./controllers/routes.js'); // Updated import statement
+app.use('/api', eventRoutes);
 
+// Error Handling Middleware
+app.use((error, req, res, next) => {
+  console.error(error.stack);
+  res.status(500).send('Error.');
+});
+
+// Default Route
 app.get('/', (req, res) => {
   res.send('This is working');
 });

@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const eventController = require("./taskController")
+const eventController = require("./eventController")
 
 router.get("/event", eventController.getEvent)
 router.post("/event", eventController.createEvent)
