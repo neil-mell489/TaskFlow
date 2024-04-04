@@ -1,5 +1,5 @@
 const { createToken } = require("../middlewares/verifyToken")
-const db = require("../models/User")
+const db = require("../models/newUser")
 const bcrypt = require("bcrypt")
 
 const signup = async (req,res) => {

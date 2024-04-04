@@ -5,7 +5,7 @@ const calendarEventSchema = new mongoose.Schema({
     description: { type: String, required: true },
     creationDate: { type: Number},
     createdAt: { type: Number},
-    createdBy: { type: mongoose.Schema.Types.ObjectId, required: true }
+    createdBy: { type: mongoose.Types.ObjectId, ref: "currentUser" }
 });
 
 
