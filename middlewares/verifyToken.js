@@ -3,7 +3,7 @@ const {JWT_SECRET} = process.env
 
 const createToken = (user) => {
     try{
-        const token = jwt.sign({id: user._id, username: user.username, email: user.email})
+        const token = jwt.sign({id: user._id, username: user.username, email: user.email}, JWT_SECRET, {expiresIn: "4h"})
         return token
     }catch(err){
         console.log(err)

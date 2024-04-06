@@ -56,6 +56,7 @@ const getUser = async(req,res) => {
         const query = db.User.findById(id)
         query.select("-password")
         const foundUser = await query.exec()
+        console.log(foundUser)
         if(!foundUser){
             return res.status(400).json({error: "User is not found"})
         }
