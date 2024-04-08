@@ -1,74 +1,64 @@
-const { createToken } = require("../middlewares/verifyToken")
-const db = require("../models/newUser")
-const bcrypt = require("bcrypt")
+const { createToken } = require("../middlewares/verifyToken");
+const User = require("../models/User"); // Import User model
 
-const signup = async (req,res) => {
-    try{
-        const {email, username, password} = req.body
-        const query = db.User.find({})
-        query.or([{username: username}, {email:email}])
-        const foundUser = await query.exec()
-
-        if (foundUser.length !== 0){
-            return res.status(400).json({message: "Username and Email already taken"})
+const signup = async (req, res) => {
+    try {
+        const { email, username, password } = req.body;
+        // Check if the username or email already exists
+        const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+        if (existingUser) {
+            return res.status(400).json({ message: "Username or email already exists" });
         }
-
-        const salt = await bcrypt.genSalt(10)
-        const hash = await bcrypt.hash(password, salt)
-
-        req.body.password = hash
-        const createdUser = await db.User.create(req.body)
-        await createdUser.save()
-
-        return res.status(201).json({message: "User successfully registered", userId: createdUser.id})
-    }catch(err){
-        console.log(err)
-        return res.status(500).json({error: "Internal Server Error", message: err.message})
+        // Hash the password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        // Create a new user
+        const newUser = await User.create({ email, username, password: hashedPassword });
+        return res.status(201).json({ message: "User successfully registered", userId: newUser.id });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
-}
+};
 
-const login = async(req,res) => {
-    try{
-        const {username,password,email} = req.body
-        const query = db.User.find({})
-        query.and([{username:username}, {email:email}])
-
-        const foundUser = await query.exec()
-        if(foundUser.length === 0){
-            return res.status(400).json({error: "Invalid Login Credentials"})
+const login = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        // Find the user by username
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(400).json({ error: "Invalid Login Credentials" });
         }
-        const verifyPassword = await bcrypt.compare(password, foundUser[0].password)
-        if(!verifyPassword){
-            return res.status(400).json({error: "Invalid Login Credentials"})
+        // Verify password
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            return res.status(400).json({ error: "Invalid Login Credentials" });
         }
-        
-        const token = createToken(foundUser[0])
-        return res.status(200).json({token, id: foundUser[0]._id})    
-    }catch(err){
-        console.log(err)
-        return res.status(500).json({message: "Internal Server Error", error: err.message})
+        // Generate JWT token
+        const token = createToken(user);
+        return res.status(200).json({ token, id: user._id });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
-}
+};
 
-const getUser = async(req,res) => {
-    try{
-        const id = req.params.id
-        const query = db.User.findById(id)
-        query.select("-password")
-        const foundUser = await query.exec()
-        console.log(foundUser)
-        if(!foundUser){
-            return res.status(400).json({error: "User is not found"})
+const getUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id).select("-password");
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
         }
-        return res.status(200).json({message: "Successfully found user", data: foundUser})
-    }catch(err){
-        console.log(err)
-        return res.status(500).json({error: "Internal Server Error"})
+        return res.status(200).json({ data: user });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
-}
+};
 
 module.exports = {
     signup,
     login,
     getUser
-}
+};

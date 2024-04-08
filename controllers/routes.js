@@ -1,24 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { verifyToken } = require("../middlewares/verifyToken")
+const { verifyToken } = require("../middlewares/verifyToken");
 
 const eventController = require('./eventController');
-const userCtrl = require("./userController")
+const userController = require("./userController");
 
-// GET - Retrieve all events
-router.get('/events', eventController.getEvent); 
+// Events Routes
+router.get('/events', verifyToken, eventController.getEvent); // Retrieve all events
+router.post('/events', verifyToken, eventController.createEvent); // Create a new event
+router.put('/events/:id', verifyToken, eventController.updateEvent); // Update an event by ID
+router.delete('/events/:id', verifyToken, eventController.deleteEvent); // Delete an event by ID
 
-// POST - Create a new event
-router.post('/events', eventController.createEvent); 
+// User Authentication Routes
+router.post("/auth/signup", userController.signup); // User sign-up
+router.post("/auth/login", userController.login); // User login
 
-// PUT - Update an event by ID
-router.put('/events/:id', eventController.updateEvent); 
-
-// DELETE - Delete an event by ID
-router.delete('/events/:id', eventController.deleteEvent); 
-
-router.post("/auth/signup", userCtrl.signup)
-router.post("/auth/login", userCtrl.login)
-router.get("/user/:id", verifyToken, userCtrl.getUser)
+// Protected Route: Requires authentication token
+router.get("/user/:id", verifyToken, userController.getUser); // Get user by ID
 
 module.exports = router;
