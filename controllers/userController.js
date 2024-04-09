@@ -64,22 +64,26 @@ const login = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-    try{
+    try {
         const id = req.params.id
         const query = db.User.findById(id)
-        // "-FIELD" excludes that field from returning in the query
         query.select("-password")
         const foundUser = await query.exec()
-        console.log(foundUser)
-        if(!foundUser){
-            return res.status(400).json({error: "User not found"})
+        
+        if (!foundUser) {
+            return res.status(400).json({ error: "User not found" })
         }
-        return res.status(200).json({message: "Successfully found user", data: foundUser})
-    }catch(err){
+
+        // Log the "Successfully found user" message only once
+        console.log("Successfully found user:", foundUser)
+
+        return res.status(200).json({ message: "Successfully found user", data: foundUser })
+    } catch (err) {
         console.log(err)
-        return res.status(500).json({error: "Internal server error"})
+        return res.status(500).json({ error: "Internal server error" })
     }
 }
+
 
 module.exports = {
     getUser,
