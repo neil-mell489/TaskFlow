@@ -12,6 +12,7 @@ const getEvent = async(req,res) => {
 
 const createEvent = async(req,res) => {
     try{
+        console.log(req.body); // Add this line to log the request body
         const newEvent = await db.Event.create(req.body)
         if (newEvent){
             res.status(201).json({data: newEvent, message: "Event Created"})

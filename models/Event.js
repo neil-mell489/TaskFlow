@@ -1,3 +1,3 @@
 module.exports = {
-    Event: require("./Task")
+  Event: require("./Task")
 }
