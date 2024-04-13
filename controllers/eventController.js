@@ -1,9 +1,10 @@
 const db = require("../models/Event")
 
 
+
 const getEvent = async(req,res) => {
     try{
-        const event = await db.Event.find()
+        const event = await db.Event.find({createdBy: req.params.id})
         res.status(200).json({data: event})
     } catch (error) {
         res.status(500).json({error: error.message})

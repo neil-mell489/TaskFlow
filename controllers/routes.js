@@ -6,7 +6,7 @@ const eventController = require('./eventController');
 const userCtrl = require("./userController")
 
 // GET - Retrieve all events
-router.get('/events', eventController.getEvent); 
+router.get('/events/:id', eventController.getEvent); 
 
 // POST - Create a new event
 router.post('/events', eventController.createEvent); 
