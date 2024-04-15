@@ -7,14 +7,7 @@ TaskFlow
 This is the backend of the TaskFlow app. It's responsible for the submission of user data to the database.
 
 ## Screenshots
-
-/Users/neilmellstrom/Desktop/TF Screenshots/Screenshot 2024-04-13 at 9.20.49 AM.png
-
-/Users/neilmellstrom/Desktop/TF Screenshots/Screenshot 2024-04-13 at 9.20.49 AM.png
-
-/Users/neilmellstrom/Desktop/TF Screenshots/Screenshot 2024-04-13 at 9.20.49 AM.png
-
-
+<img src="./Backend Working.png">
 
 ## Technologies Used
 - mongoDB
@@ -33,7 +26,7 @@ This is the backend of the TaskFlow app. It's responsible for the submission of 
 ## Getting Started
 
 ***HEROKU LINK***
-
+https://taskflow-backend-1-7a6df76dbbd4.herokuapp.com/
 
 ***TRELLO BOARD LINK***
 https://trello.com/b/FWerrIdl/taskflow
